@@ -1,7 +1,13 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { authService } from "@/services";
-import type { User, LoginRequest, RegisterRequest, RegisterResponse, apiError } from "@/types/api";
+import type {
+  User,
+  LoginRequest,
+  RegisterRequest,
+  RegisterResponse,
+  apiError,
+} from "@/types/api";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref<User | null>(null);
@@ -10,7 +16,9 @@ export const useAuthStore = defineStore("auth", () => {
   const error = ref<string | null>(null);
 
   const isAuthenticated = computed(() => !!token.value && !!user.value);
-  const userName = computed(() => user.value ? `${user.value.firstName} ${user.value.lastName}` : "");
+  const userName = computed(() =>
+    user.value ? `${user.value.firstName} ${user.value.lastName}` : ""
+  );
   const userEmail = computed(() => user.value?.email || "");
   const userRole = computed(() => user.value?.role || "");
   const isAdmin = computed(() => user.value?.role === "admin");
@@ -48,8 +56,12 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (err: unknown) {
       console.error("Login failed:", err);
       const apiError = err as apiError;
-      const { NotificationService } = await import("@/services/notificationService");
-      NotificationService.error(apiError.message || "Wrong username or password.");
+      const { NotificationService } = await import(
+        "@/services/notificationService"
+      );
+      NotificationService.error(
+        apiError.message || "Wrong username or password."
+      );
 
       throw err;
     } finally {
@@ -57,7 +69,9 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  const register = async (userData: RegisterRequest): Promise<RegisterResponse> => {
+  const register = async (
+    userData: RegisterRequest
+  ): Promise<RegisterResponse> => {
     try {
       isLoading.value = true;
       error.value = null;
@@ -68,8 +82,12 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (err) {
       console.error("Registration failed:", err);
       const apiError = err as apiError;
-      const { NotificationService } = await import("@/services/notificationService");
-      NotificationService.error(apiError.message || "Registration failed. Please try again.");
+      const { NotificationService } = await import(
+        "@/services/notificationService"
+      );
+      NotificationService.error(
+        apiError.message || "Registration failed. Please try again."
+      );
 
       throw err;
     } finally {
@@ -78,20 +96,14 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const logout = async () => {
-    try {
-      isLoading.value = true;
+    isLoading.value = true;
 
-      if (token.value) {
-        await authService.logout();
-      }
-    } catch (err) {
-      console.warn("Logout request failed:", err);
-    } finally {
-      token.value = null;
-      user.value = null;
-      error.value = null;
-      isLoading.value = false;
-    }
+    await authService.logout();
+
+    token.value = null;
+    user.value = null;
+    error.value = null;
+    isLoading.value = false;
   };
 
   const clearError = () => {
