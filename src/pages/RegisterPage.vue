@@ -20,7 +20,6 @@ const user = ref({
   dateOfBirth: "",
 });
 
-// Password validation
 const passwordValidation = computed(() => {
   const password = user.value.password;
   return {
