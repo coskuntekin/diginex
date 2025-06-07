@@ -64,15 +64,37 @@ export interface User extends BaseEntity {
 
 export interface CreateUserRequest {
   username: string;
+  password: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
+  dateOfBirth: string;
   role?: string;
 }
 
 export interface UpdateUserRequest {
+  username?: string;
+  password?: string;
   firstName?: string;
   lastName?: string;
   dateOfBirth?: string;
+  role?: string;
+}
+
+export interface QueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface PaginatedResponse<T> {
+  users?: T[];
+  data?: T[];
+  items?: T[];
+  next?: string | null;
+  prev?: string | null;
+  total?: number;
+  page?: number;
+  limit?: number;
 }
