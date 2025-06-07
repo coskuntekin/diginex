@@ -44,6 +44,13 @@ const handleLogout = async () => {
             >
               Profile
             </router-link>
+            <router-link
+              v-if="authStore.isAdmin"
+              :to="{ name: 'admin-users' }"
+              class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            >
+              User Management
+            </router-link>
             <button
               @click="handleLogout"
               class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
