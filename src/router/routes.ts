@@ -62,6 +62,16 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
         },
       },
+      {
+        path: "admin/users",
+        name: "admin-users",
+        component: () => import("@/pages/AdminUsersPage.vue"),
+        meta: {
+          title: "User Management",
+          requiresAuth: true,
+          requiresAdmin: true,
+        },
+      },
     ],
   },
 
