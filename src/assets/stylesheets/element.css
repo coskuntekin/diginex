@@ -1,0 +1,26 @@
+:root {
+  --el-date-editor-width: 100%;
+}
+.el-pagination {
+  --el-pagination-hover-color: #fa6402;
+}
+
+.el-pagination__sizes {
+  margin: 0 0 0 16px;
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+  font-weight: 400;
+  border: 1px solid #fa6402;
+  color: #fa6400;
+  background-color: #ffffff;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  font-weight: 400;
+  border: 1px solid #e5e7eb;
+  color: rgb(59, 59, 59);
+  background-color: #ffffff;
+}

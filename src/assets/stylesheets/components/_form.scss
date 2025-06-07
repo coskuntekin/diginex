@@ -1,0 +1,39 @@
+//------------------------------------
+// #Form
+//------------------------------------
+
+%invalid {
+  color: #f87171;
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: #f87171;
+}
+
+.form--invalid {
+  :invalid {
+    background-color: #fef2f2;
+    border-color: #f87171;
+
+    + .btn--invalid {
+      background-color: #fef2f2;
+      border-color: #f87171;
+    }
+  }
+}
+
+.form--invalid {
+  :invalid {
+    &::placeholder {
+      @extend %invalid;
+    }
+
+    + label {
+      @extend %invalid;
+    }
+
+    + button {
+      background-color: #fef2f2;
+      border-color: #f87171;
+    }
+  }
+}
