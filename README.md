@@ -58,13 +58,13 @@ The `docker-compose.yml` configures:
 - **Network** for service communication
 - **Volume mounts** for development hot reload
 
-## 🔧 Configuration Files
+## Configuration Files
 
 - **`vite.config.ts`** - Vite build configuration
 - **`tsconfig.json`** - TypeScript configuration
 - **`eslint.config.js`** - ESLint configuration
 
-## 🌐 Environment Variables
+## Environment Variables
 
 The application uses the following environment variables:
 
