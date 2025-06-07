@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { userService } from '../services';
-import type { User, CreateUserRequest, UpdateUserRequest, QueryParams, apiError } from '../types/api';
+import type { User, CreateUserRequest, UpdateUserRequest, QueryParams, apiError, PaginatedResponse } from '../types/api';
 
 export const useUserStore = defineStore('user', () => {
   const users = ref<User[]>([]);
@@ -11,19 +11,25 @@ export const useUserStore = defineStore('user', () => {
 
   const totalUsers = computed(() => users.value.length);
   const hasUsers = computed(() => users.value.length > 0);
-  const activeUsers = computed(() => users.value.filter(user => user.isActive));
-  const inactiveUsers = computed(() => users.value.filter(user => !user.isActive));
 
   const fetchUsers = async (params?: QueryParams) => {
     try {
       isLoading.value = true;
       error.value = null;
 
-      const response: User[] = await userService.getUsers(params);
+      const response = await userService.getUsers(params);
 
-      users.value = response;
+      // Handle both paginated response and direct array response
+      let usersArray: User[];
+      if (Array.isArray(response)) {
+        usersArray = response;
+      } else {
+        // Handle paginated response structure
+        usersArray = (response as PaginatedResponse<User>)?.users || [];
+      }
 
-      return response;
+      users.value = usersArray;
+      return users.value;
     } catch (err: unknown) {
       const apiError = err as apiError;
       error.value = apiError.message || 'Failed to fetch users';
@@ -144,32 +150,6 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
-  const toggleUserStatus = async (id: string | number) => {
-    try {
-      isLoading.value = true;
-      error.value = null;
-
-      const updatedUser = await userService.toggleUserStatus(id);
-
-      const index = users.value.findIndex(user => user.id === id);
-      if (index !== -1) {
-        users.value[index] = updatedUser;
-      }
-
-      if (selectedUser.value?.id === id) {
-        selectedUser.value = updatedUser;
-      }
-
-      return updatedUser;
-    } catch (err: unknown) {
-      const apiError = err as apiError;
-      error.value = apiError.message || 'Failed to toggle user status';
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
-  };
-
   const clearError = () => {
     error.value = null;
   };
@@ -193,8 +173,6 @@ export const useUserStore = defineStore('user', () => {
 
     totalUsers,
     hasUsers,
-    activeUsers,
-    inactiveUsers,
 
     fetchUsers,
     fetchUserById,
@@ -202,7 +180,6 @@ export const useUserStore = defineStore('user', () => {
     updateUser,
     patchUser,
     deleteUser,
-    toggleUserStatus,
     clearError,
     clearSelectedUser,
     resetState,
