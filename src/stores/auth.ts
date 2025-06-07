@@ -19,7 +19,6 @@ export const useAuthStore = defineStore("auth", () => {
   const userName = computed(() =>
     user.value ? `${user.value.firstName} ${user.value.lastName}` : ""
   );
-  const userEmail = computed(() => user.value?.email || "");
   const userRole = computed(() => user.value?.role || "");
   const isAdmin = computed(() => user.value?.role === "admin");
 
@@ -106,6 +105,38 @@ export const useAuthStore = defineStore("auth", () => {
     isLoading.value = false;
   };
 
+  const updateProfile = async (userData: Partial<User>) => {
+    try {
+      isLoading.value = true;
+      error.value = null;
+
+      if (!user.value?.id) {
+        throw new Error("User ID is required for profile update");
+      }
+
+      const updatedUser = await authService.updateProfile(
+        user.value.id,
+        userData
+      );
+      user.value = updatedUser;
+
+      return updatedUser;
+    } catch (err: unknown) {
+      console.error("Profile update failed:", err);
+      const apiError = err as apiError;
+      const { NotificationService } = await import(
+        "@/services/notificationService"
+      );
+      NotificationService.error(
+        apiError.message || "Failed to update profile. Please try again."
+      );
+
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
   const clearError = () => {
     error.value = null;
   };
@@ -118,7 +149,6 @@ export const useAuthStore = defineStore("auth", () => {
 
     isAuthenticated,
     userName,
-    userEmail,
     userRole,
     isAdmin,
 
@@ -126,6 +156,7 @@ export const useAuthStore = defineStore("auth", () => {
     login,
     register,
     logout,
+    updateProfile,
     clearError,
   };
 });
