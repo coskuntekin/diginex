@@ -30,8 +30,8 @@ export class AuthService extends BaseService {
     this.clearAuth();
   }
 
-  async updateProfile(userData: Partial<User>): Promise<User> {
-    const user = await this.put<User>("/auth/profile", userData);
+  async updateProfile(userId: string, userData: Partial<User>): Promise<User> {
+    const user = await this.put<User>(`/users/${userId}`, userData);
     this.setCurrentUser(user);
     return user;
   }
