@@ -53,6 +53,15 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
         },
       },
+      {
+        path: "profile/:id?",
+        name: "profile",
+        component: () => import("@/pages/ProfilePage.vue"),
+        meta: {
+          title: "Profile",
+          requiresAuth: true,
+        },
+      },
     ],
   },
 
