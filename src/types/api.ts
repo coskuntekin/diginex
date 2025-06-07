@@ -1,3 +1,30 @@
+export interface ApiResponse<T = unknown> {
+  data: T;
+  message?: string;
+  success: boolean;
+  status?: number;
+}
+
+export interface ApiError {
+  message: string;
+  status: number;
+  code?: string;
+  data?: unknown;
+  errors?: Record<string, string[]>;
+}
+
+export interface apiError {
+  message: string;
+  code: number;
+}
+
+export interface BaseEntity {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  token: string;
+}
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -27,42 +54,12 @@ export interface RegisterResponse {
   updatedAt: number;
 }
 
-export interface ApiResponse<T = unknown> {
-  data: T;
-  message?: string;
-  success: boolean;
-  status?: number;
-}
-
-export interface ApiError {
-  message: string;
-  status: number;
-  code?: string;
-  data?: unknown;
-  errors?: Record<string, string[]>;
-}
-
-// Specific API error format for standardized error responses
-export interface apiError {
-  message: string;
-  code: number;
-}
-
-export interface BaseEntity {
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-}
-
 export interface User extends BaseEntity {
   username: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
   role: string;
-  email?: string;
-  avatar?: string;
-  isActive?: boolean;
 }
 
 export interface CreateUserRequest {
@@ -75,20 +72,7 @@ export interface CreateUserRequest {
 }
 
 export interface UpdateUserRequest {
-  username?: string;
   firstName?: string;
   lastName?: string;
-  email?: string;
-  avatar?: string;
-  role?: string;
-  isActive?: boolean;
-}
-
-export interface QueryParams {
-  page?: number;
-  limit?: number;
-  search?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-  filter?: Record<string, unknown>;
+  dateOfBirth?: string;
 }
