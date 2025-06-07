@@ -27,13 +27,7 @@ export class AuthService extends BaseService {
   }
 
   async logout(): Promise<void> {
-    try {
-      await this.post<void>("/logout");
-    } catch (error) {
-      console.warn("Logout request failed, but clearing local storage:", error);
-    } finally {
-      this.clearAuth();
-    }
+    this.clearAuth();
   }
 
   async updateProfile(userData: Partial<User>): Promise<User> {
