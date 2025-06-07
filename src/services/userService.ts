@@ -3,12 +3,13 @@ import type {
   User,
   CreateUserRequest,
   UpdateUserRequest,
-  QueryParams
+  QueryParams,
+  PaginatedResponse
 } from '@/types/api';
 
 export class UserService extends BaseService {
-  async getUsers(params?: QueryParams): Promise<User[]> {
-    return this.get<User[]>('/users', params);
+  async getUsers(params?: QueryParams): Promise<PaginatedResponse<User> | User[]> {
+    return this.get<PaginatedResponse<User> | User[]>('/users', params);
   }
 
   async getUserById(id: string | number): Promise<User> {
