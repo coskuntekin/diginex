@@ -24,3 +24,42 @@
   color: rgb(59, 59, 59);
   background-color: #ffffff;
 }
+
+.el-message-box {
+  border-radius: 8px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.el-message-box__title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.el-message-box__content {
+  color: #6b7280;
+}
+
+.el-message-box__btns {
+  padding: 16px 20px;
+}
+
+.el-message-box__btns .el-button--danger {
+  background-color: #dc2626;
+  border-color: #dc2626;
+}
+
+.el-message-box__btns .el-button--danger:hover {
+  background-color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.el-message-box__btns .el-button--default {
+  color: #374151;
+  background-color: #ffffff;
+  border-color: #d1d5db;
+}
+
+.el-message-box__btns .el-button--default:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
