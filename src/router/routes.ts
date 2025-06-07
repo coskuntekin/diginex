@@ -53,34 +53,13 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
         },
       },
-      {
-        path: "admin",
-        name: "admin-dashboard",
-        component: () => import("@/pages/admin/DashboardPage.vue"),
-        meta: {
-          title: "Admin Dashboard",
-          requiresAuth: true,
-          requiresAdmin: true,
-        },
-      },
     ],
   },
 
-  // Legacy routes (for backward compatibility)
-  {
-    path: "/login",
-    redirect: { name: "login" },
-  },
-  {
-    path: "/register",
-    redirect: { name: "register" },
-  },
-
-  // 404 page
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: () => import("../pages/NotFoundPage.vue"),
+    component: () => import("@/pages/NotFoundPage.vue"),
     meta: {
       title: "Page Not Found",
     },
