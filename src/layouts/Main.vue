@@ -35,7 +35,10 @@ const handleLogout = async () => {
           </router-link>
 
           <div class="flex items-center space-x-4">
-            <span class="text-gray-700">
+            <span
+              class="text-gray-700 truncate max-w-xs"
+              :title="`Welcome, ${authStore.userName}`"
+            >
               Welcome, {{ authStore.userName }}
             </span>
             <router-link
