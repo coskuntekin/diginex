@@ -20,7 +20,7 @@ export const useAuthStore = defineStore("auth", () => {
     user.value ? `${user.value.firstName} ${user.value.lastName}` : ""
   );
   const userRole = computed(() => user.value?.role || "");
-  const isAdmin = computed(() => user.value?.role === "admin");
+  const isAdmin = computed(() => user.value?.role === "ADMIN");
 
   const initializeAuth = async () => {
     try {
