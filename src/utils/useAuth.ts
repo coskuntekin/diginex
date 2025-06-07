@@ -27,7 +27,6 @@ export function useAuth() {
     isLoading: computed(() => authStore.isLoading),
     error: computed(() => authStore.error),
     userName: computed(() => authStore.userName),
-    userEmail: computed(() => authStore.userEmail),
     userRole: computed(() => authStore.userRole),
 
     login,
