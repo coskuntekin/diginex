@@ -24,15 +24,7 @@ export const useAuthStore = defineStore("auth", () => {
         token.value = storedToken;
         user.value = storedUser;
 
-        if (!authService.isTokenExpired()) {
-          try {
-            const currentUser = await authService.getCurrentUser();
-            user.value = currentUser;
-          } catch (err) {
-            console.error("Failed to fetch current user:", err);
-            await logout();
-          }
-        } else {
+        if (authService.isTokenExpired()) {
           await logout();
         }
       }

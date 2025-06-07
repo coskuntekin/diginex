@@ -36,10 +36,6 @@ export class AuthService extends BaseService {
     }
   }
 
-  async getCurrentUser(): Promise<User> {
-    return this.get<User>("/auth/me");
-  }
-
   async updateProfile(userData: Partial<User>): Promise<User> {
     const user = await this.put<User>("/auth/profile", userData);
     this.setCurrentUser(user);
