@@ -24,17 +24,26 @@ const handleLogout = async () => {
     <nav class="bg-white shadow-sm border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-          <div class="flex items-center">
+          <router-link
+            :to="{ name: 'dashboard' }"
+            class="flex items-center hover:opacity-80 transition-opacity duration-200"
+          >
             <img src="@/assets/images/logo.png" alt="Logo" class="h-8 w-8" />
             <span class="ml-2 text-xl font-semibold text-gray-900">
-              Take Home Challenge
+              Diginex Dashboard
             </span>
-          </div>
+          </router-link>
 
           <div class="flex items-center space-x-4">
             <span class="text-gray-700">
               Welcome, {{ authStore.userName }}
             </span>
+            <router-link
+              :to="{ name: 'profile', params: { id: authStore.user?.id } }"
+              class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            >
+              Profile
+            </router-link>
             <button
               @click="handleLogout"
               class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
