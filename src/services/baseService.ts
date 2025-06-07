@@ -22,6 +22,15 @@ export class BaseService {
       const response = await request;
 
       if (
+        response.status === 204 ||
+        response.data === "" ||
+        response.data === null ||
+        response.data === undefined
+      ) {
+        return undefined as T;
+      }
+
+      if (
         response.data &&
         typeof response.data === "object" &&
         "data" in response.data
@@ -31,10 +40,6 @@ export class BaseService {
           throw new Error("No data received from server");
         }
         return apiResponse.data;
-      }
-
-      if (!response.data) {
-        throw new Error("No data received from server");
       }
 
       return response.data as T;
