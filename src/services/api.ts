@@ -18,10 +18,14 @@ api.interceptors.request.use(
     }
 
     if (import.meta.env.DEV) {
-      console.log(
-        `[API Request] ${config.method?.toUpperCase()} ${config.url}`,
-        config.data
-      );
+      const logMessage = `[API Request] ${config.method?.toUpperCase()} ${
+        config.url
+      }`;
+      if (config.data) {
+        console.log(logMessage, config.data);
+      } else {
+        console.log(logMessage);
+      }
     }
 
     return config;
