@@ -1,6 +1,5 @@
 import { NotificationService } from "@/services/notificationService";
 
-// Re-export for easier imports
 export const useNotification = () => ({
   success: NotificationService.success,
   error: NotificationService.error,
@@ -9,7 +8,6 @@ export const useNotification = () => ({
   handleApiError: NotificationService.handleApiError,
 });
 
-// Direct exports for even easier access
 export const notify = {
   success: NotificationService.success,
   error: NotificationService.error,
