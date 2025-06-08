@@ -9,7 +9,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElPagination: typeof import('element-plus/es')['ElPagination']
+    LoadingSpinner: typeof import('./src/components/LoadingSpinner.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TweetQueryExamples: typeof import('./src/components/TweetQueryExamples.vue')['default']
   }
 }
