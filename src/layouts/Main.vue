@@ -1,71 +1,14 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
+import Header from "@/partials/Header.vue";
 
 defineOptions({
   name: "MainLayout",
 });
-
-const router = useRouter();
-const authStore = useAuthStore();
-
-const handleLogout = async () => {
-  try {
-    await authStore.logout();
-    router.push({ name: "login" });
-  } catch (error) {
-    console.error("Logout failed:", error);
-  }
-};
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-50">
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <router-link
-            :to="{ name: 'dashboard' }"
-            class="flex items-center hover:opacity-80 transition-opacity duration-200"
-          >
-            <img src="@/assets/images/logo.png" alt="Logo" class="h-8 w-8" />
-            <span class="ml-2 text-xl font-semibold text-gray-900">
-              Diginex Dashboard
-            </span>
-          </router-link>
-
-          <div class="flex items-center space-x-4">
-            <span
-              class="text-gray-700 truncate max-w-xs"
-              :title="`Welcome, ${authStore.userName}`"
-            >
-              Welcome, {{ authStore.userName }}
-            </span>
-            <router-link
-              :to="{ name: 'profile', params: { id: authStore.user?.id } }"
-              class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              Profile
-            </router-link>
-            <router-link
-              v-if="authStore.isAdmin"
-              :to="{ name: 'admin-users' }"
-              class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              User Management
-            </router-link>
-            <button
-              @click="handleLogout"
-              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              :disabled="authStore.isLoading"
-            >
-              {{ authStore.isLoading ? "Logging out..." : "Logout" }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
-
+    <Header />
     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <router-view />
     </main>
