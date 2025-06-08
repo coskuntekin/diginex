@@ -1,11 +1,11 @@
-import { BaseService } from './baseService';
 import type {
-  User,
   CreateUserRequest,
-  UpdateUserRequest,
+  PaginatedResponse,
   QueryParams,
-  PaginatedResponse
+  UpdateUserRequest,
+  User
 } from '@/types/api';
+import { BaseService } from './baseService';
 
 export class UserService extends BaseService {
   async getUsers(params?: QueryParams): Promise<PaginatedResponse<User> | User[]> {
