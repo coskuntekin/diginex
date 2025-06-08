@@ -7,7 +7,7 @@ export const setPageTitleMiddleware = (
   next: NavigationGuardNext
 ) => {
   if (to.meta.title) {
-    document.title = `${to.meta.title} - Take Home Challenge`;
+    document.title = `${to.meta.title} - Diginex`;
   }
   next();
 };
