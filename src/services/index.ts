@@ -1,7 +1,11 @@
-export { default as api } from './api';
-export { BaseService } from './baseService';
-export { AuthService, authService } from './authService';
-export { UserService, userService } from './userService';
-export { NotificationService, notificationService } from './notificationService';
+export { default as api } from "./api";
+export { AuthService, authService } from "./authService";
+export { BaseService } from "./baseService";
+export {
+  NotificationService,
+  notificationService
+} from "./notificationService";
+export { TweetService, tweetService } from "./tweetService";
+export { UserService, userService } from "./userService";
 
-export * from '../types/api';
+export * from "@/types/api";
