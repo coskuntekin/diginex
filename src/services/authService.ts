@@ -1,4 +1,3 @@
-import { BaseService } from "./baseService";
 import type {
   LoginRequest,
   LoginResponse,
@@ -6,6 +5,7 @@ import type {
   RegisterResponse,
   User,
 } from "@/types/api";
+import { BaseService } from "./baseService";
 
 export class AuthService extends BaseService {
   private readonly TOKEN_KEY = "authToken";
@@ -62,7 +62,6 @@ export class AuthService extends BaseService {
     localStorage.removeItem(this.USER_KEY);
   }
 
-  // Check if token is expired (basic check)
   isTokenExpired(): boolean {
     const token = this.getToken();
     if (!token) return true;
