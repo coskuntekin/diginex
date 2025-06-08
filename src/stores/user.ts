@@ -19,12 +19,10 @@ export const useUserStore = defineStore('user', () => {
 
       const response = await userService.getUsers(params);
 
-      // Handle both paginated response and direct array response
       let usersArray: User[];
       if (Array.isArray(response)) {
         usersArray = response;
       } else {
-        // Handle paginated response structure
         usersArray = (response as PaginatedResponse<User>)?.users || [];
       }
 
