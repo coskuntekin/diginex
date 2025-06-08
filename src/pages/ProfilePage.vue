@@ -169,7 +169,7 @@ const formatDate = (dateString: string) => {
 
 const formatAccountDate = (timestamp: number | undefined) => {
   if (!timestamp) return "Unknown";
-  return formatTimestamp(timestamp, 'MMMM DD, YYYY [at] h:mm A');
+  return formatTimestamp(timestamp, "MMMM DD, YYYY [at] h:mm A");
 };
 </script>
 
@@ -197,7 +197,10 @@ const formatAccountDate = (timestamp: number | undefined) => {
         <div class="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-2xl font-bold text-white">
+              <h2
+                class="text-2xl font-bold text-white truncate max-w-lg"
+                :title="displayUser?.firstName + ' ' + displayUser?.lastName"
+              >
                 {{ displayUser?.firstName }} {{ displayUser?.lastName }}
               </h2>
               <p class="text-amber-100">@{{ displayUser?.username }}</p>
@@ -379,7 +382,14 @@ const formatAccountDate = (timestamp: number | undefined) => {
               >
               <p
                 class="text-gray-900"
-                :title="displayUser?.createdAt ? formatTimestamp(displayUser.createdAt, 'dddd, MMMM DD, YYYY [at] h:mm:ss A') : 'Unknown'"
+                :title="
+                  displayUser?.createdAt
+                    ? formatTimestamp(
+                        displayUser.createdAt,
+                        'dddd, MMMM DD, YYYY [at] h:mm:ss A'
+                      )
+                    : 'Unknown'
+                "
               >
                 {{ formatAccountDate(displayUser?.createdAt) }}
               </p>
@@ -391,7 +401,14 @@ const formatAccountDate = (timestamp: number | undefined) => {
               >
               <p
                 class="text-gray-900"
-                :title="displayUser?.updatedAt ? formatTimestamp(displayUser.updatedAt, 'dddd, MMMM DD, YYYY [at] h:mm:ss A') : 'Unknown'"
+                :title="
+                  displayUser?.updatedAt
+                    ? formatTimestamp(
+                        displayUser.updatedAt,
+                        'dddd, MMMM DD, YYYY [at] h:mm:ss A'
+                      )
+                    : 'Unknown'
+                "
               >
                 {{ formatAccountDate(displayUser?.updatedAt) }}
               </p>
