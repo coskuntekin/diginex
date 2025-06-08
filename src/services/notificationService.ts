@@ -57,18 +57,18 @@ export class NotificationService {
   static handleApiError(error: unknown) {
     let message: string;
 
-    // Check if it's the new apiError format
-    if (error && typeof error === 'object' && 'message' in error && 'code' in error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "message" in error &&
+      "code" in error
+    ) {
       const apiErr = error as apiError;
       message = apiErr.message;
-    }
-    // Check if it's the legacy ApiError format
-    else if (error && typeof error === 'object' && 'message' in error) {
+    } else if (error && typeof error === "object" && "message" in error) {
       const apiErr = error as ApiError;
       message = apiErr.message;
-    }
-    // Check if it's an axios-like error with response structure
-    else if (error && typeof error === 'object' && 'response' in error) {
+    } else if (error && typeof error === "object" && "response" in error) {
       const axiosError = error as {
         response?: {
           status?: number;
@@ -78,13 +78,12 @@ export class NotificationService {
           };
         };
       };
-      message = axiosError.response?.data?.message || "An unexpected error occurred. Please try again.";
-    }
-    // Fallback for other error types
-    else if (error instanceof Error) {
+      message =
+        axiosError.response?.data?.message ||
+        "An unexpected error occurred. Please try again.";
+    } else if (error instanceof Error) {
       message = error.message;
-    }
-    else {
+    } else {
       message = "An unexpected error occurred. Please try again.";
     }
 
