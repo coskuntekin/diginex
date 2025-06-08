@@ -1,6 +1,6 @@
-import api from "./api";
-import type { ApiResponse, apiError, QueryParams } from "@/types/api";
+import type { apiError, ApiResponse, QueryParams } from "@/types/api";
 import type { AxiosResponse } from "axios";
+import api from "./api";
 
 interface ErrorResponse {
   response?: {
