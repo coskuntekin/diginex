@@ -28,6 +28,7 @@ export function useAuth() {
     error: computed(() => authStore.error),
     userName: computed(() => authStore.userName),
     userRole: computed(() => authStore.userRole),
+    isAdmin: computed(() => authStore.isAdmin),
 
     login,
     logout,
