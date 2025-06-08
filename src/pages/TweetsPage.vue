@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
-import { ElMessageBox } from "element-plus";
+import { ElMessageBox, ElPagination } from "element-plus";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {
   useTweet,
@@ -25,13 +25,13 @@ const {
   deleteTweet,
   clearError,
   clearTweets,
-  hasMoreTweets,
+  totalTweets,
 } = useTweet();
 const { user, isAdmin } = useAuth();
 
 const searchQuery = ref("");
 const currentPage = ref(1);
-const loadingMore = ref(false);
+const pageSize = ref(10);
 const sortOrder = ref<"newest" | "oldest">("newest");
 
 const getSortParams = () => {
@@ -75,38 +75,36 @@ const canEditTweet = (tweet: Tweet) => {
   );
 };
 
-const loadTweets = async (page = 1, loadMore = false) => {
+const loadTweets = async (page = 1) => {
   try {
-    if (loadMore) {
-      loadingMore.value = true;
-    }
-
     const sortParams = getSortParams();
     await fetchTweets({
       page,
-      limit: 10,
+      limit: pageSize.value,
       ...sortParams,
     });
-
     currentPage.value = page;
   } catch (err) {
     console.error("Failed to load tweets:", err);
     notify.error("Failed to load tweets");
-  } finally {
-    loadingMore.value = false;
   }
 };
 
-const loadMoreTweets = async () => {
-  if (hasMoreTweets && !isLoading && !loadingMore.value) {
-    await loadTweets(currentPage.value + 1, true);
-  }
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+  loadTweets(page);
+};
+
+const handlePageSizeChange = (newPageSize: number) => {
+  pageSize.value = newPageSize;
+  currentPage.value = 1;
+  loadTweets(1);
 };
 
 const handleSortChange = async () => {
   currentPage.value = 1;
   clearTweets();
-  await loadTweets(1, false);
+  await loadTweets(1);
 };
 
 const editTweet = (tweetId: string) => {
@@ -128,6 +126,8 @@ const handleDeleteTweet = async (tweet: Tweet) => {
 
     await deleteTweet(tweet.id);
     notify.success("Tweet deleted successfully");
+
+    await loadTweets(currentPage.value);
   } catch (error) {
     if (error === "cancel") {
       return;
@@ -151,6 +151,12 @@ const truncateContent = (content: string | undefined, maxLength = 150) => {
 onMounted(() => {
   clearError();
   loadTweets();
+});
+
+watch(searchQuery, () => {
+  if (searchQuery.value.trim()) {
+    currentPage.value = 1;
+  }
 });
 </script>
 
@@ -412,21 +418,23 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-if="hasMoreTweets" class="flex justify-center pt-4">
-        <button
-          type="button"
-          @click="loadMoreTweets"
-          :disabled="loadingMore"
-          class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <LoadingSpinner
-            v-if="loadingMore"
-            size="sm"
-            color="#6b7280"
-            container-class="-ml-1 mr-2"
-          />
-          {{ loadingMore ? "Loading..." : "Load More" }}
-        </button>
+      <div
+        v-if="!searchQuery && totalTweets > 0"
+        class="flex justify-center pt-6"
+      >
+        <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[5, 10, 15, 20, 50]"
+          :small="false"
+          :disabled="isLoading"
+          :background="true"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalTweets"
+          @size-change="handlePageSizeChange"
+          @current-change="handlePageChange"
+          class="justify-center"
+        />
       </div>
     </div>
   </div>
