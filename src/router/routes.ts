@@ -63,6 +63,42 @@ export const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "tweets",
+        name: "tweets",
+        component: () => import("@/pages/TweetsPage.vue"),
+        meta: {
+          title: "Tweets",
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "tweets/create",
+        name: "tweet-create",
+        component: () => import("@/pages/TweetFormPage.vue"),
+        meta: {
+          title: "Create Tweet",
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "tweets/:id",
+        name: "tweet-detail",
+        component: () => import("@/pages/TweetDetailPage.vue"),
+        meta: {
+          title: "Tweet Detail",
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "tweets/:id/edit",
+        name: "tweet-edit",
+        component: () => import("@/pages/TweetFormPage.vue"),
+        meta: {
+          title: "Edit Tweet",
+          requiresAuth: true,
+        },
+      },
+      {
         path: "admin/users",
         name: "admin-users",
         component: () => import("@/pages/AdminUsersPage.vue"),
