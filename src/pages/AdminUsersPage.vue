@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { ElMessageBox, ElDialog } from "element-plus";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import { useUser, notify } from "@/utils";
 import type { User, CreateUserRequest, UpdateUserRequest } from "@/types/api";
 
@@ -100,7 +101,6 @@ const resetForm = () => {
   };
   isFormInvalid.value = false;
 
-  // Reset any browser validation states
   setTimeout(() => {
     if (userFormRef.value) {
       userFormRef.value.noValidate = false;
@@ -297,10 +297,7 @@ onMounted(() => {
 
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <div v-if="isLoading" class="p-8 text-center">
-        <div
-          class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"
-        ></div>
-        <p class="mt-2 text-gray-600">Loading users...</p>
+        <LoadingSpinner size="lg" color="#2563eb" text="Loading users..." />
       </div>
 
       <div v-else-if="filteredUsers.length === 0" class="p-8 text-center">
