@@ -31,7 +31,7 @@ Before running this application, make sure you have:
    ./setup.sh
    ```
 
-2. **Start your backend service** (in your backend repository)
+2. **Start your backend service** (in backend repository)
    ```bash
    docker-compose up -d
    ```
