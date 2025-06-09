@@ -12,6 +12,10 @@ export class TweetService extends BaseService {
     return this.get<PaginatedResponse<Tweet> | Tweet[]>('/tweets', params);
   }
 
+  async getTweet(id: string | number): Promise<Tweet> {
+    return this.get<Tweet>(`/tweets/${id}`);
+  }
+
   async getTweetById(id: string | number): Promise<Tweet> {
     return this.get<Tweet>(`/tweets/${id}`);
   }

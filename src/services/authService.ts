@@ -50,7 +50,15 @@ export class AuthService extends BaseService {
 
   getCurrentUserFromStorage(): User | null {
     const userData = localStorage.getItem(this.USER_KEY);
-    return userData ? JSON.parse(userData) : null;
+    if (!userData) return null;
+
+    try {
+      return JSON.parse(userData);
+    } catch {
+      // Clear invalid data
+      localStorage.removeItem(this.USER_KEY);
+      return null;
+    }
   }
 
   isAuthenticated(): boolean {

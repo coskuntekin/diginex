@@ -1,9 +1,11 @@
 import { useAuthStore } from "@/stores";
 import type { LoginRequest, RegisterRequest, RegisterResponse } from "@/types/api";
 import { computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 export function useAuth() {
   const authStore = useAuthStore();
+  const router = useRouter();
 
   onMounted(() => {
     authStore.initializeAuth();
@@ -15,10 +17,31 @@ export function useAuth() {
 
   const logout = async () => {
     await authStore.logout();
+    router.push('/login');
   };
 
   const register = async (userData: RegisterRequest): Promise<RegisterResponse> => {
     return await authStore.register(userData);
+  };
+
+  const requireAuth = () => {
+    if (!authStore.isAuthenticated) {
+      router.push('/login');
+      return false;
+    }
+    return true;
+  };
+
+  const requireAdmin = () => {
+    if (!authStore.isAuthenticated) {
+      router.push('/login');
+      return false;
+    }
+    if (!authStore.isAdmin) {
+      router.push('/');
+      return false;
+    }
+    return true;
   };
 
   return {
@@ -33,5 +56,7 @@ export function useAuth() {
     login,
     logout,
     register,
+    requireAuth,
+    requireAdmin,
   };
 }

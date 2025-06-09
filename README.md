@@ -69,3 +69,32 @@ The `docker-compose.yml` configures:
 The application uses the following environment variables:
 
 - `VITE_API_BASE_URL` - Backend API URL (default: http://localhost:12001)
+
+## Testing
+
+This project includes comprehensive tests covering unit, integration, and E2E scenarios using **Vitest** and **Vue Test Utils**.
+
+### Test Types
+
+- **Unit Tests**: Test individual components, stores, services, and utilities in isolation
+- **Integration Tests**: Test component interactions with stores and routing
+- **E2E Flow Tests**: Test complete user workflows and application behavior
+
+### Running Tests
+
+```bash
+# Run all tests once
+pnpm test:run
+
+# Run tests in watch mode
+pnpm test
+
+# Run tests with UI interface
+pnpm test:ui
+
+# Run tests with coverage report
+pnpm test:coverage
+
+# Run tests in watch mode
+pnpm test:watch
+```

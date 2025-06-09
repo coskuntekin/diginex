@@ -55,12 +55,12 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (err: unknown) {
       console.error("Login failed:", err);
       const apiError = err as apiError;
+      error.value = apiError.message || "Wrong username or password.";
+
       const { NotificationService } = await import(
         "@/services/notificationService"
       );
-      NotificationService.error(
-        apiError.message || "Wrong username or password."
-      );
+      NotificationService.error(error.value);
 
       throw err;
     } finally {
@@ -81,12 +81,12 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (err) {
       console.error("Registration failed:", err);
       const apiError = err as apiError;
+      error.value = apiError.message || "Registration failed. Please try again.";
+
       const { NotificationService } = await import(
         "@/services/notificationService"
       );
-      NotificationService.error(
-        apiError.message || "Registration failed. Please try again."
-      );
+      NotificationService.error(error.value);
 
       throw err;
     } finally {

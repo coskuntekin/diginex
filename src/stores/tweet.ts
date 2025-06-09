@@ -12,6 +12,7 @@ import { computed, ref } from "vue";
 export const useTweetStore = defineStore("tweet", () => {
   const tweets = ref<Tweet[]>([]);
   const selectedTweet = ref<Tweet | null>(null);
+  const currentTweet = selectedTweet; // Alias for compatibility
   const isLoading = ref(false);
   const error = ref<string | null>(null);
   const pagination = ref<{
@@ -32,25 +33,41 @@ export const useTweetStore = defineStore("tweet", () => {
 
   const totalTweets = computed(() => pagination.value.total);
   const hasTweets = computed(() => tweets.value.length > 0);
-  const currentPage = computed(() => pagination.value.page);
+  const currentPage = computed({
+    get: () => pagination.value.page,
+    set: (value: number) => { pagination.value.page = value; }
+  });
+  const totalPages = computed({
+    get: () => Math.ceil(pagination.value.total / pagination.value.limit),
+    set: (value: number) => {
+      pagination.value.total = value * pagination.value.limit;
+    }
+  });
   const hasMoreTweets = computed(() => pagination.value.hasMore);
   const nextToken = computed(() => pagination.value.nextToken);
   const prevToken = computed(() => pagination.value.prevToken);
+
+  // Additional computed properties for pagination
+  const hasNextPage = computed(() => pagination.value.hasMore || currentPage.value < totalPages.value);
+  const hasPrevPage = computed(() => currentPage.value > 1);
 
   const fetchTweets = async (params?: QueryParams) => {
     try {
       isLoading.value = true;
       error.value = null;
 
-      const response = await tweetService.getTweets(params);
+      // Provide default parameters if none are passed
+      const requestParams = params || { page: 1, limit: 10 };
+
+      const response = await tweetService.getTweets(requestParams);
 
       let tweetsArray: Tweet[] = [];
       if (Array.isArray(response)) {
         tweetsArray = response;
         pagination.value = {
           total: response.length,
-          page: params?.page || 1,
-          limit: params?.limit || 10,
+          page: requestParams.page || 1,
+          limit: requestParams.limit || 10,
           hasMore: false,
           nextToken: undefined,
           prevToken: undefined,
@@ -59,8 +76,8 @@ export const useTweetStore = defineStore("tweet", () => {
         tweetsArray = response.tweets || response.data || response.items || [];
         pagination.value = {
           total: response.total || tweetsArray.length,
-          page: response.page || params?.page || 1,
-          limit: response.limit || params?.limit || 10,
+          page: response.page || requestParams.page || 1,
+          limit: response.limit || requestParams.limit || 10,
           hasMore:
             (response.page || 1) * (response.limit || 10) <
             (response.total || 0),
@@ -102,6 +119,9 @@ export const useTweetStore = defineStore("tweet", () => {
       isLoading.value = false;
     }
   };
+
+  // Alias for compatibility
+  const fetchTweet = fetchTweetById;
 
   const createTweet = async (tweetData: CreateTweetRequest) => {
     try {
@@ -227,6 +247,9 @@ export const useTweetStore = defineStore("tweet", () => {
     selectedTweet.value = null;
   };
 
+  // Alias for compatibility
+  const clearCurrentTweet = clearSelectedTweet;
+
   const setSelectedTweet = (tweet: Tweet) => {
     selectedTweet.value = tweet;
   };
@@ -277,6 +300,7 @@ export const useTweetStore = defineStore("tweet", () => {
   return {
     tweets,
     selectedTweet,
+    currentTweet,
     isLoading,
     error,
     pagination,
@@ -284,12 +308,16 @@ export const useTweetStore = defineStore("tweet", () => {
     totalTweets,
     hasTweets,
     currentPage,
+    totalPages,
     hasMoreTweets,
+    hasNextPage,
+    hasPrevPage,
     nextToken,
     prevToken,
 
     fetchTweets,
     fetchTweetById,
+    fetchTweet, // Alias for fetchTweetById
     createTweet,
     updateTweet,
     deleteTweet,
@@ -299,6 +327,7 @@ export const useTweetStore = defineStore("tweet", () => {
     clearError,
     clearTweets,
     clearSelectedTweet,
+    clearCurrentTweet, // Alias for clearSelectedTweet
     setSelectedTweet,
     resetState,
   };
