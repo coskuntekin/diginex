@@ -202,30 +202,7 @@ export const useTweetStore = defineStore("tweet", () => {
     }
   };
 
-  const fetchMyTweets = async (params?: QueryParams) => {
-    try {
-      isLoading.value = true;
-      error.value = null;
 
-      const response = await tweetService.getMyTweets(params);
-
-      let tweetsArray: Tweet[] = [];
-      if (Array.isArray(response)) {
-        tweetsArray = response;
-      } else {
-        tweetsArray = response.tweets || response.data || response.items || [];
-      }
-
-      tweets.value = tweetsArray;
-      return tweets.value;
-    } catch (err: unknown) {
-      const apiError = err as apiError;
-      error.value = apiError.message || "Failed to fetch my tweets";
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
-  };
 
   const clearError = () => {
     error.value = null;
@@ -321,7 +298,6 @@ export const useTweetStore = defineStore("tweet", () => {
     createTweet,
     updateTweet,
     deleteTweet,
-    fetchMyTweets,
     fetchNextPage,
     fetchPrevPage,
     clearError,

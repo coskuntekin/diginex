@@ -31,10 +31,6 @@ export class TweetService extends BaseService {
   async deleteTweet(id: string | number): Promise<void> {
     return this.delete<void>(`/tweets/${id}`);
   }
-
-  async getMyTweets(params?: QueryParams): Promise<PaginatedResponse<Tweet> | Tweet[]> {
-    return this.get<PaginatedResponse<Tweet> | Tweet[]>('/tweets/my', params);
-  }
 }
 
 export const tweetService = new TweetService();

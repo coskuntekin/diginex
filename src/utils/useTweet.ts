@@ -46,10 +46,6 @@ export function useTweet() {
     await tweetStore.deleteTweet(id);
   };
 
-  const fetchMyTweets = async (params?: QueryParams) => {
-    return await tweetStore.fetchMyTweets(params);
-  };
-
   const fetchNextPage = async (additionalParams?: Omit<QueryParams, 'token'>) => {
     return await tweetStore.fetchNextPage(additionalParams);
   };
@@ -113,7 +109,6 @@ export function useTweet() {
     createTweet,
     updateTweet,
     deleteTweet,
-    fetchMyTweets,
     fetchNextPage,
     fetchPrevPage,
     clearError,
