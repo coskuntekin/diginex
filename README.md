@@ -20,7 +20,7 @@ Before running this application, make sure you have:
 
 ### Prerequisites
 - **Docker** and **Docker Compose** installed
-- **Backend service** running on port 12001 (from your backend repository)
+- **Backend service** running on port 12001 (backend repository)
 
 ### Setup and Run
 
