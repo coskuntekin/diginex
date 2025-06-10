@@ -54,7 +54,7 @@ pnpm dev
 ### Docker Compose
 The `docker-compose.yml` configures:
 
-- **Frontend service** on port 3000
+- **Frontend service** on port 5173
 - **Network** for service communication
 - **Volume mounts** for development hot reload
 
