@@ -55,7 +55,6 @@ export class AuthService extends BaseService {
     try {
       return JSON.parse(userData);
     } catch {
-      // Clear invalid data
       localStorage.removeItem(this.USER_KEY);
       return null;
     }
