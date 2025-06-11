@@ -180,7 +180,6 @@ describe('Auth Store', () => {
 
     vi.mocked(authService.getToken).mockReturnValue(mockToken);
     vi.mocked(authService.getCurrentUserFromStorage).mockReturnValue(mockUser);
-    vi.mocked(authService.getCurrentUser).mockResolvedValue(mockUser);
     vi.mocked(authService.isTokenExpired).mockReturnValue(false);
 
     await store.initializeAuth();

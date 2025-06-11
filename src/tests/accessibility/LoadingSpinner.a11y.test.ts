@@ -10,10 +10,9 @@ describe('Accessibility Tests', () => {
       }
     });
 
-    // Check for accessibility attributes
     const container = wrapper.find('div');
-    expect(container.attributes('role')).toBe('status') ||
-    expect(container.attributes('aria-live')).toBe('polite') ||
+    expect(container.attributes('role')).toBe('status');
+    expect(container.attributes('aria-live')).toBe('polite');
     expect(container.attributes('aria-busy')).toBe('true');
   });
 
@@ -24,7 +23,6 @@ describe('Accessibility Tests', () => {
       }
     });
 
-    // Text should be visible for screen readers
     const text = wrapper.find('span');
     expect(text.exists()).toBe(true);
     expect(text.text()).toBe('Loading user data...');
@@ -33,7 +31,7 @@ describe('Accessibility Tests', () => {
   it('should have proper contrast and visibility', () => {
     const wrapper = mount(LoadingSpinner, {
       props: {
-        color: '#000000', // High contrast color
+        color: '#000000',
         text: 'Loading...'
       }
     });
@@ -60,14 +58,12 @@ describe('Accessibility Tests', () => {
     const buttons = wrapper.findAll('button');
     expect(buttons.length).toBe(2);
 
-    // Loading spinner shouldn't interfere with tab order
     buttons.forEach(button => {
       expect(button.attributes('tabindex')).not.toBe('-1');
     });
   });
 
   it('should handle reduced motion preferences', () => {
-    // Mock reduced motion preference
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: vi.fn().mockImplementation(query => ({
@@ -83,7 +79,6 @@ describe('Accessibility Tests', () => {
     const wrapper = mount(LoadingSpinner);
     const svg = wrapper.find('svg');
 
-    // Should still render even with reduced motion
     expect(svg.exists()).toBe(true);
     expect(svg.classes()).toContain('animate-spin');
   });
@@ -95,7 +90,6 @@ describe('Accessibility Tests', () => {
       }
     });
 
-    // Check semantic structure
     const container = wrapper.find('div');
     const svg = wrapper.find('svg');
     const text = wrapper.find('span');
@@ -104,7 +98,6 @@ describe('Accessibility Tests', () => {
     expect(svg.exists()).toBe(true);
     expect(text.exists()).toBe(true);
 
-    // SVG should have proper namespace
     expect(svg.attributes('xmlns')).toBe('http://www.w3.org/2000/svg');
     expect(svg.attributes('viewBox')).toBe('0 0 512 512');
   });
@@ -118,7 +111,6 @@ describe('Accessibility Tests', () => {
 
     const container = wrapper.find('div');
 
-    // Should have attributes that assistive technologies can understand
     expect(
       container.attributes('role') === 'status' ||
       container.attributes('aria-live') === 'polite' ||

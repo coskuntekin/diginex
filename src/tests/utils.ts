@@ -31,16 +31,20 @@ export const mountComponent = (
   const { props = {}, global = {}, initialState = {}, router = false } = options;
 
   const plugins = [createTestingPiniaWithInitialState(initialState)];
+  const globalConfig = { ...global };
 
   if (router) {
-    plugins.push(createTestRouter());
+    if (!globalConfig.plugins) {
+      globalConfig.plugins = [];
+    }
+    globalConfig.plugins.push(createTestRouter());
   }
 
   return mount(component, {
     props,
     global: {
       plugins,
-      ...global,
+      ...globalConfig,
     },
   });
 };

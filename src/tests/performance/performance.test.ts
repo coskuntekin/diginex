@@ -19,7 +19,7 @@ describe('Performance Tests', () => {
     const renderTime = endTime - startTime;
 
     expect(wrapper.exists()).toBe(true);
-    expect(renderTime).toBeLessThan(100); // Should render in less than 100ms
+    expect(renderTime).toBeLessThan(100);
   });
 
   it('should handle multiple component mounts efficiently', () => {
@@ -41,9 +41,8 @@ describe('Performance Tests', () => {
     const totalTime = endTime - startTime;
 
     expect(wrappers.length).toBe(10);
-    expect(totalTime).toBeLessThan(500); // Should mount 10 components in less than 500ms
+    expect(totalTime).toBeLessThan(500);
 
-    // Clean up
     wrappers.forEach(wrapper => wrapper.unmount());
   });
 
@@ -60,7 +59,6 @@ describe('Performance Tests', () => {
 
     const startTime = performance.now();
 
-    // Create store instance with Pinia
     mount({
       template: '<div></div>',
       setup() {
@@ -76,13 +74,12 @@ describe('Performance Tests', () => {
     const endTime = performance.now();
     const storeCreationTime = endTime - startTime;
 
-    expect(storeCreationTime).toBeLessThan(50); // Store creation should be fast
+    expect(storeCreationTime).toBeLessThan(50);
   });
 
   it('should handle large data sets efficiently', () => {
     const startTime = performance.now();
 
-    // Create a large array of mock data
     const largeDataSet = Array.from({ length: 1000 }, (_, index) => ({
       id: index.toString(),
       title: `Tweet ${index}`,
@@ -90,7 +87,6 @@ describe('Performance Tests', () => {
       createdAt: Date.now() / 1000,
     }));
 
-    // Simulate processing this data (e.g., filtering, mapping)
     const processedData = largeDataSet
       .filter(item => item.id !== '500')
       .map(item => ({ ...item, processed: true }))
@@ -100,11 +96,11 @@ describe('Performance Tests', () => {
     const processingTime = endTime - startTime;
 
     expect(processedData.length).toBe(100);
-    expect(processingTime).toBeLessThan(100); // Data processing should be efficient
+    expect(processingTime).toBeLessThan(100);
   });
 
   it('should handle DOM updates efficiently', async () => {
-    const wrapper = mount({
+    const TestComponent = {
       template: `
         <div>
           <div v-for="item in items" :key="item.id">
@@ -114,16 +110,17 @@ describe('Performance Tests', () => {
       `,
       data() {
         return {
-          items: []
+          items: [] as Array<{ id: number; title: string }>
         };
       }
-    });
+    };
+
+    const wrapper = mount(TestComponent);
 
     const startTime = performance.now();
 
-    // Add items gradually to test reactivity performance
     for (let i = 0; i < 50; i++) {
-      wrapper.vm.items.push({
+      (wrapper.vm as any).items.push({
         id: i,
         title: `Item ${i}`
       });
@@ -133,7 +130,7 @@ describe('Performance Tests', () => {
     const endTime = performance.now();
     const updateTime = endTime - startTime;
 
-    expect(wrapper.vm.items.length).toBe(50);
-    expect(updateTime).toBeLessThan(1000); // DOM updates should complete within 1 second
+    expect((wrapper.vm as any).items.length).toBe(50);
+    expect(updateTime).toBeLessThan(1000);
   });
 });

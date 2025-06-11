@@ -6,14 +6,13 @@ import App from '@/App.vue';
 import { useAuthStore } from '@/stores/auth';
 
 describe('Application E2E Flow', () => {
-  let wrapper: any;
   let mockRouter: any;
   let authStore: any;
 
   beforeEach(async () => {
     mockRouter = createTestRouter();
 
-    wrapper = mount(App, {
+    mount(App, {
       global: {
         plugins: [
           createTestingPinia({ createSpy: vi.fn }),
@@ -134,7 +133,7 @@ describe('Application E2E Flow', () => {
   it('should initialize auth on app start', async () => {
     const initializeAuth = vi.fn().mockResolvedValue(undefined);
 
-    wrapper = mount(App, {
+    const wrapper = mount(App, {
       global: {
         plugins: [
           createTestingPinia({
@@ -157,5 +156,6 @@ describe('Application E2E Flow', () => {
     await flushPromises();
 
     expect(initializeAuth).toHaveBeenCalled();
+    expect(wrapper.exists()).toBe(true);
   });
 });

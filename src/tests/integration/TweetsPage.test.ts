@@ -61,9 +61,10 @@ describe('TweetsPage Integration', () => {
 
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.text()).toContain('No tweets') ||
-    expect(wrapper.text()).toContain('empty') ||
-    expect(wrapper.find('[data-testid="empty-state"]').exists()).toBe(true);
+    const hasNoTweets = wrapper.text().includes('No tweets') ||
+                       wrapper.text().includes('empty') ||
+                       wrapper.find('[data-testid="empty-state"]').exists();
+    expect(hasNoTweets).toBe(true);
   });
 
   it('should have create tweet button for authenticated users', () => {
@@ -96,8 +97,9 @@ describe('TweetsPage Integration', () => {
 
   it('should handle pagination', async () => {
     const tweetStore = useTweetStore();
-    tweetStore.hasNextPage = true;
-    tweetStore.currentPage = 1;
+    // Set pagination data through the pagination ref instead of computed properties
+    tweetStore.pagination.hasMore = true;
+    tweetStore.pagination.page = 1;
 
     await wrapper.vm.$nextTick();
 
