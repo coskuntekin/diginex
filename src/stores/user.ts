@@ -11,6 +11,8 @@ export const useUserStore = defineStore('user', () => {
 
   const totalUsers = computed(() => users.value.length);
   const hasUsers = computed(() => users.value.length > 0);
+  const activeUsers = computed(() => users.value.filter(user => user.role !== 'inactive'));
+  const inactiveUsers = computed(() => users.value.filter(user => user.role === 'inactive'));
 
   const fetchUsers = async (params?: QueryParams) => {
     try {
@@ -148,6 +150,34 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
+  const toggleUserStatus = async (id: string | number) => {
+    try {
+      isLoading.value = true;
+      error.value = null;
+
+      const user = users.value.find(u => u.id === id);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const newRole = user.role === 'inactive' ? 'user' : 'inactive';
+      const updatedUser = await userService.patchUser(id, { role: newRole });
+
+      const index = users.value.findIndex(u => u.id === id);
+      if (index !== -1) {
+        users.value[index] = updatedUser;
+      }
+
+      return updatedUser;
+    } catch (err: unknown) {
+      const apiError = err as apiError;
+      error.value = apiError.message || 'Failed to toggle user status';
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
   const clearError = () => {
     error.value = null;
   };
@@ -171,6 +201,8 @@ export const useUserStore = defineStore('user', () => {
 
     totalUsers,
     hasUsers,
+    activeUsers,
+    inactiveUsers,
 
     fetchUsers,
     fetchUserById,
@@ -178,6 +210,7 @@ export const useUserStore = defineStore('user', () => {
     updateUser,
     patchUser,
     deleteUser,
+    toggleUserStatus,
     clearError,
     clearSelectedUser,
     resetState,
