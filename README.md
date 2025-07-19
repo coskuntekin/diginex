@@ -1,4 +1,4 @@
-# Take Home Challenge
+# Diginex
 
 A modern Vue.js frontend application built with TypeScript and Pinia
 
